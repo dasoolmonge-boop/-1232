@@ -13,7 +13,7 @@ async function start() {
   await db.init();
 
   const app = express();
-  const PORT = process.env.PORT || 3000;
+  const PORT = 3000; // Bothost требует порт 3000 для нашего приложения
 
   // Middleware
   app.use(cors());
