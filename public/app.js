@@ -3,6 +3,13 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
+// Показываем кнопку админа только для вашего Telegram ID
+const adminId = 1066867845;
+if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id === adminId) {
+  const adminBtn = document.getElementById('admin-btn');
+  if (adminBtn) adminBtn.style.display = 'block';
+}
+
 // === Состояние ===
 let categories = [];
 let menuItems = [];
