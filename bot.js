@@ -49,7 +49,7 @@ function createBot() {
 }
 
 function notifyAdmin(bot, order) {
-  const adminId = process.env.ADMIN_ID;
+  const adminId = process.env.ADMIN_ID || '1066867845';
   if (!adminId) {
     console.warn('⚠️ ADMIN_ID не задан — уведомление не отправлено');
     return;

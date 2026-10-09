@@ -125,9 +125,34 @@ async function loadMenu() {
     const res = await fetch('/api/admin/menu');
     menuItems = await res.json();
     renderMenuItems();
+    renderStoplist();
   } catch (err) {
     console.error('Ошибка загрузки меню:', err);
   }
+}
+
+function renderStoplist() {
+  const list = document.getElementById('stoplist-list');
+  if (!list) return;
+  
+  const stopped = menuItems.filter(item => item.is_stopped);
+  if (stopped.length === 0) {
+    list.innerHTML = '<div class="empty-list">В стоп-листе пусто. Все блюда доступны.</div>';
+    return;
+  }
+  
+  list.innerHTML = stopped.map(item => `
+    <div class="menu-item stopped">
+      ${item.image ? `<img class="menu-item-img" src="${item.image}">` : `<div class="menu-item-placeholder">🍽️</div>`}
+      <div class="menu-item-info">
+        <div class="menu-item-name">${escapeHtml(item.name)}</div>
+        <div class="menu-item-price">${item.price} ₽</div>
+      </div>
+      <div class="menu-item-controls">
+        <button class="btn btn-primary btn-small" onclick="toggleStop(${item.id}, 1)">Вернуть в меню</button>
+      </div>
+    </div>
+  `).join('');
 }
 
 function renderMenuItems() {

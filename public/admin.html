@@ -18,6 +18,7 @@
   <nav class="tabs">
     <button class="tab active" data-tab="categories" onclick="switchTab('categories')">Категории</button>
     <button class="tab" data-tab="menu" onclick="switchTab('menu')">Меню</button>
+    <button class="tab" data-tab="stoplist" onclick="switchTab('stoplist')">Стоп-лист</button>
     <button class="tab" data-tab="orders" onclick="switchTab('orders')">Заказы</button>
   </nav>
 
@@ -60,6 +61,12 @@
       </div>
     </div>
     <div class="list" id="menu-list"></div>
+  </div>
+
+  <!-- === СТОП-ЛИСТ === -->
+  <div class="tab-content" id="tab-stoplist">
+    <h3 style="margin-bottom: 15px; color: var(--uz-blue);">Временно недоступные блюда</h3>
+    <div class="list" id="stoplist-list"></div>
   </div>
 
   <!-- === ЗАКАЗЫ === -->
