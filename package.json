@@ -1,0 +1,18 @@
+{
+  "name": "food-delivery-miniapp",
+  "version": "1.0.0",
+  "description": "Telegram Mini App для доставки еды",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.1",
+    "multer": "^1.4.5-lts.1",
+    "node-telegram-bot-api": "^0.66.0",
+    "sql.js": "^1.11.0"
+  }
+}

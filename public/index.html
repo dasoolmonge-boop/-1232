@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Доставка еды</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://unpkg.com/imask@7.6.1/dist/imask.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Шапка -->
+  <header class="header">
+    <h1>🍕 Доставка еды</h1>
+    <div class="header-cart" id="header-cart" onclick="toggleCart()">
+      🛒 <span id="header-cart-count">0</span>
+    </div>
+  </header>
+
+  <!-- Категории -->
+  <div class="categories" id="categories"></div>
+
+  <!-- Меню -->
+  <div class="menu-grid" id="menu-grid"></div>
+
+  <!-- Пустое состояние -->
+  <div class="empty-state" id="empty-state" style="display:none;">
+    <div class="empty-icon">🍽️</div>
+    <p>Меню пока пусто</p>
+  </div>
+
+  <!-- Кнопка корзины -->
+  <div class="cart-fab" id="cart-fab" onclick="toggleCart()" style="display:none;">
+    <span class="cart-fab-icon">🛒</span>
+    <span class="cart-fab-badge" id="cart-fab-badge">0</span>
+  </div>
+
+  <!-- Оверлей корзины -->
+  <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+
+  <!-- Панель корзины -->
+  <div class="cart-panel" id="cart-panel">
+    <div class="cart-handle"></div>
+    <h2 class="cart-title">🛒 Корзина</h2>
+    <div class="cart-items" id="cart-items"></div>
+    <div class="cart-empty" id="cart-empty" style="display:none;">
+      <p>Корзина пуста</p>
+    </div>
+    <div class="cart-footer" id="cart-footer">
+      <div class="cart-total">
+        <span>Итого:</span>
+        <span id="cart-total-amount">0 ₽</span>
+      </div>
+      <button class="btn-checkout" id="btn-checkout" onclick="openOrderForm()">Оформить заказ</button>
+    </div>
+  </div>
+
+  <!-- Модальное окно заказа -->
+  <div class="modal-overlay" id="order-modal" style="display:none;">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>📋 Оформление заказа</h2>
+        <button class="modal-close" onclick="closeOrderForm()">✕</button>
+      </div>
+      <form id="order-form" onsubmit="submitOrder(event)">
+        <div class="form-group">
+          <label for="phone-input">Телефон *</label>
+          <input type="tel" id="phone-input" placeholder="+7 (___) ___-__-__" required>
+        </div>
+        <div class="form-group">
+          <label for="address-input">Адрес доставки *</label>
+          <input type="text" id="address-input" placeholder="Улица, дом, квартира" required>
+        </div>
+        <div class="form-group">
+          <label for="comment-input">Комментарий</label>
+          <textarea id="comment-input" placeholder="Пожелания к заказу, домофон, этаж..." rows="3"></textarea>
+        </div>
+        <div class="form-total">
+          <span>К оплате:</span>
+          <span id="form-total-amount">0 ₽</span>
+        </div>
+        <button type="submit" class="btn-submit" id="btn-submit">Отправить заказ</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Успешный заказ -->
+  <div class="success-overlay" id="success-overlay" style="display:none;">
+    <div class="success-content">
+      <div class="success-check">✓</div>
+      <h2>Заказ принят!</h2>
+      <p>Мы свяжемся с вами в ближайшее время</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

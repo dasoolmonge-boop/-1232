@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Админ-панель</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- Шапка -->
+  <header class="admin-header">
+    <h1>⚙️ Админ-панель</h1>
+  </header>
+
+  <!-- Вкладки -->
+  <nav class="tabs">
+    <button class="tab active" data-tab="categories" onclick="switchTab('categories')">Категории</button>
+    <button class="tab" data-tab="menu" onclick="switchTab('menu')">Меню</button>
+    <button class="tab" data-tab="orders" onclick="switchTab('orders')">Заказы</button>
+  </nav>
+
+  <!-- === КАТЕГОРИИ === -->
+  <div class="tab-content active" id="tab-categories">
+    <div class="form-card">
+      <h3>Добавить категорию</h3>
+      <div class="form-row">
+        <input type="text" id="cat-name" placeholder="Название категории" class="input">
+        <input type="number" id="cat-sort" placeholder="Порядок" class="input input-small" value="0">
+        <button class="btn btn-primary" onclick="addCategory()">Добавить</button>
+      </div>
+    </div>
+    <div class="list" id="categories-list"></div>
+  </div>
+
+  <!-- === МЕНЮ === -->
+  <div class="tab-content" id="tab-menu">
+    <div class="form-card">
+      <h3 id="menu-form-title">Добавить позицию</h3>
+      <div class="form-fields">
+        <select id="item-category" class="input">
+          <option value="">Без категории</option>
+        </select>
+        <input type="text" id="item-name" placeholder="Название" class="input">
+        <textarea id="item-desc" placeholder="Описание" class="input" rows="2"></textarea>
+        <input type="number" id="item-price" placeholder="Цена (₽)" class="input" step="1" min="0">
+        <div class="file-upload">
+          <label for="item-image" class="file-label">
+            <span id="file-label-text">📷 Выбрать фото</span>
+          </label>
+          <input type="file" id="item-image" accept="image/*" onchange="previewImage(this)">
+          <img id="image-preview" class="image-preview" style="display:none;">
+        </div>
+        <input type="number" id="item-sort" placeholder="Порядок сортировки" class="input" value="0">
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" id="menu-form-btn" onclick="saveMenuItem()">Добавить позицию</button>
+        <button class="btn btn-secondary" id="menu-cancel-btn" onclick="cancelEdit()" style="display:none;">Отмена</button>
+      </div>
+    </div>
+    <div class="list" id="menu-list"></div>
+  </div>
+
+  <!-- === ЗАКАЗЫ === -->
+  <div class="tab-content" id="tab-orders">
+    <div class="orders-header">
+      <span class="orders-hint">Обновление каждые 30 сек</span>
+      <button class="btn btn-secondary btn-small" onclick="loadOrders()">🔄 Обновить</button>
+    </div>
+    <div class="list" id="orders-list"></div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
