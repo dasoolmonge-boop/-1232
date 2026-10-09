@@ -8,7 +8,7 @@ function createBot() {
   }
 
   const bot = new TelegramBot(token, { polling: true });
-  const webAppUrl = process.env.WEBAPP_URL;
+  const webAppUrl = process.env.WEBAPP_URL || 'https://1232.onrender.com';
 
   bot.onText(/\/start/, (msg) => {
     const chatId = msg.chat.id;
