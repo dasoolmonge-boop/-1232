@@ -87,8 +87,8 @@ module.exports = function(db, bot) {
 
       res.json({ success: true, orderId: Number(orderId) });
     } catch (err) {
-      console.error('Ошибка создания заказа:', err.message);
-      res.status(500).json({ error: 'Ошибка сервера' });
+      console.error('Ошибка создания заказа:', err);
+      res.status(500).json({ error: 'Ошибка сервера: ' + err.message });
     }
   });
 
