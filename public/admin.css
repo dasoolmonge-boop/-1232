@@ -15,12 +15,12 @@
   --uz-cream-dark: #F5EDE0;
   --uz-brown: #5C3A1E;
 
-  --bg: var(--tg-theme-bg-color, var(--uz-cream));
-  --text: var(--tg-theme-text-color, #2C1810);
-  --hint: var(--tg-theme-hint-color, #8B7355);
-  --btn: var(--tg-theme-button-color, var(--uz-turquoise));
-  --btn-text: var(--tg-theme-button-text-color, #ffffff);
-  --secondary-bg: var(--tg-theme-secondary-bg-color, var(--uz-cream-dark));
+  --bg: var(--uz-cream);
+  --text: #2C1810;
+  --hint: #8B7355;
+  --btn: var(--uz-turquoise);
+  --btn-text: #ffffff;
+  --secondary-bg: var(--uz-cream-dark);
 }
 
 body {
