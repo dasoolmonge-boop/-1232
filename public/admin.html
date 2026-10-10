@@ -73,7 +73,10 @@
   <div class="tab-content" id="tab-orders">
     <div class="orders-header">
       <span class="orders-hint">Обновление каждые 30 сек</span>
-      <button class="btn btn-secondary btn-small" onclick="loadOrders()">🔄 Обновить</button>
+      <div>
+        <button class="btn btn-secondary btn-small" onclick="loadOrders()" style="margin-right: 5px;">🔄</button>
+        <button class="btn btn-secondary btn-small" onclick="clearAllOrders()" style="background: var(--uz-terracotta); color: white; border: none;">🗑 Очистить</button>
+      </div>
     </div>
     <div class="list" id="orders-list"></div>
   </div>

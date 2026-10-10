@@ -356,18 +356,17 @@ function renderOrders() {
       hour: '2-digit', minute: '2-digit'
     });
 
-    const statusClass = `status-${order.status}`;
-    const statusText = {
-      'new': 'Новый',
-      'confirmed': 'Подтверждён',
-      'done': 'Готов'
-    }[order.status] || order.status;
-
     return `
       <div class="order-card">
         <div class="order-header">
           <span class="order-number">Заказ #${order.id}</span>
-          <span class="status-badge ${statusClass}">${statusText}</span>
+          <select class="status-select ${order.status}" onchange="updateOrderStatus(${order.id}, this.value)">
+            <option value="new" ${order.status === 'new' ? 'selected' : ''}>Новый</option>
+            <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>Готовится</option>
+            <option value="delivering" ${order.status === 'delivering' ? 'selected' : ''}>В пути</option>
+            <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Завершен</option>
+            <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Отменен</option>
+          </select>
         </div>
         <div class="order-date">${dateStr}</div>
         <div class="order-info">
@@ -385,6 +384,39 @@ function renderOrders() {
       </div>
     `;
   }).join('');
+}
+
+async function updateOrderStatus(id, newStatus) {
+  try {
+    const res = await fetch(`/api/admin/orders/${id}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus })
+    });
+    const data = await res.json();
+    if (data.success) {
+      loadOrders();
+    } else {
+      alert('Ошибка при обновлении статуса');
+    }
+  } catch (err) {
+    alert('Ошибка соединения');
+  }
+}
+
+async function clearAllOrders() {
+  if (!confirm('Вы уверены, что хотите удалить ВСЕ заказы? Это действие необратимо.')) return;
+  try {
+    const res = await fetch('/api/admin/orders', { method: 'DELETE' });
+    const data = await res.json();
+    if (data.success) {
+      loadOrders();
+    } else {
+      alert('Ошибка при очистке заказов');
+    }
+  } catch (err) {
+    alert('Ошибка соединения');
+  }
 }
 
 // === Утилиты ===

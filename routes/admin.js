@@ -192,5 +192,30 @@ module.exports = function(db) {
     }
   });
 
+  router.put('/api/admin/orders/:id/status', (req, res) => {
+    try {
+      const { status } = req.body;
+      db.run('UPDATE orders SET status = ? WHERE id = ?', [status, req.params.id]);
+      res.json({ success: true });
+    } catch (err) {
+      console.error('Ошибка обновления статуса:', err.message);
+      res.status(500).json({ error: 'Ошибка сервера' });
+    }
+  });
+
+  router.delete('/api/admin/orders', (req, res) => {
+    try {
+      db.transaction(() => {
+        db.run('DELETE FROM order_items');
+        db.run('DELETE FROM orders');
+        return true;
+      });
+      res.json({ success: true });
+    } catch (err) {
+      console.error('Ошибка удаления заказов:', err.message);
+      res.status(500).json({ error: 'Ошибка сервера' });
+    }
+  });
+
   return router;
 };
