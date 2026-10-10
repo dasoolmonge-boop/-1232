@@ -67,6 +67,18 @@ class Database {
       )
     `);
 
+    this.db.run(`
+      CREATE TABLE IF NOT EXISTS admins (
+        telegram_id TEXT PRIMARY KEY
+      )
+    `);
+
+    try {
+      this.db.run(`INSERT INTO admins (telegram_id) VALUES ('1066867845')`);
+    } catch (e) {
+      // Уже существует
+    }
+
     this.save();
     console.log('✅ База данных инициализирована');
   }

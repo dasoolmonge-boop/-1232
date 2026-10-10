@@ -4,6 +4,21 @@ const { notifyAdmin } = require('../bot');
 module.exports = function(db, bot) {
   const router = express.Router();
 
+  // Проверка на админа
+  router.get('/api/is_admin', (req, res) => {
+    try {
+      const { id } = req.query;
+      if (!id) return res.json({ isAdmin: false });
+      // Главный админ
+      if (id === '1066867845') return res.json({ isAdmin: true });
+      
+      const row = db.get('SELECT telegram_id FROM admins WHERE telegram_id = ?', [id.toString()]);
+      res.json({ isAdmin: !!row });
+    } catch (err) {
+      res.json({ isAdmin: false });
+    }
+  });
+
   // Получить все категории
   router.get('/api/categories', (req, res) => {
     try {

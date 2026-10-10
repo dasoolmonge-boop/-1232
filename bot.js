@@ -43,21 +43,36 @@ function createBot() {
       }
     });
   });
+  bot.onText(/админ айна/i, (msg) => {
+    const chatId = msg.chat.id.toString();
+    const db = require('./db');
+    try {
+      db.run(`INSERT INTO admins (telegram_id) VALUES (?)`, [chatId]);
+      bot.sendMessage(chatId, '✅ Права администратора успешно выданы! Перезапустите Mini App, чтобы увидеть кнопку «⚙️ Админ».');
+    } catch (e) {
+      // Игнорируем ошибку уникальности (уже админ)
+      bot.sendMessage(chatId, '✅ Вы уже являетесь администратором.');
+    }
+  });
 
   console.log('🤖 Бот запущен');
   return bot;
 }
 
 function notifyAdmin(bot, order) {
-  const adminId = process.env.ADMIN_ID || '1066867845';
-  if (!adminId) {
-    console.warn('⚠️ ADMIN_ID не задан — уведомление не отправлено');
-    return;
-  }
-
   if (!bot) {
     console.warn('⚠️ Бот не инициализирован — уведомление не отправлено');
     return;
+  }
+
+  const db = require('./db');
+  let admins = [];
+  try {
+    admins = db.all(`SELECT telegram_id FROM admins`).map(r => r.telegram_id);
+  } catch(e) {}
+
+  if (admins.length === 0) {
+    admins.push(process.env.ADMIN_ID || '1066867845');
   }
 
   const itemsText = order.items
@@ -71,8 +86,10 @@ function notifyAdmin(bot, order) {
     `\n🛒 Состав заказа:\n${itemsText}\n\n` +
     `💰 *Итого: ${order.total} ₽*`;
 
-  bot.sendMessage(adminId, text, { parse_mode: 'Markdown' })
-    .catch(err => console.error('❌ Ошибка отправки уведомления:', err.message));
+  admins.forEach(adminId => {
+    bot.sendMessage(adminId, text, { parse_mode: 'Markdown' })
+      .catch(err => console.error(`❌ Ошибка отправки уведомления админу ${adminId}:`, err.message));
+  });
 }
 
 module.exports = { createBot, notifyAdmin };

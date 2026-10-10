@@ -3,6 +3,19 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
+// Показываем кнопку админа динамически
+if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+  fetch(`/api/is_admin?id=${tg.initDataUnsafe.user.id}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.isAdmin) {
+        const adminBtn = document.getElementById('admin-btn');
+        if (adminBtn) adminBtn.style.display = 'inline-block';
+      }
+    })
+    .catch(console.error);
+}
+
 // === Состояние ===
 let categories = [];
 let menuItems = [];
