@@ -113,20 +113,24 @@ class Database {
     this.db.run(sql, params);
     const lastId = this.db.exec("SELECT last_insert_rowid()")[0]?.values[0][0] || 0;
     const changes = this.db.getRowsModified();
-    this.save();
+    if (!this.inTransaction) this.save();
     return { lastInsertRowid: lastId, changes };
   }
 
   // Транзакция
   transaction(fn) {
+    this.inTransaction = true;
     this.db.run("BEGIN");
     try {
       const result = fn();
       this.db.run("COMMIT");
+      this.inTransaction = false;
       this.save();
       return result;
     } catch (e) {
-      this.db.run("ROLLBACK");
+      this.inTransaction = false;
+      console.error("TRANSACTION ERROR:", e);
+      try { this.db.run("ROLLBACK"); } catch (err) {}
       throw e;
     }
   }
