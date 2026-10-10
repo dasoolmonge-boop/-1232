@@ -5,7 +5,8 @@ tg.expand();
 
 // Показываем кнопку админа динамически
 if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-  fetch(`/api/is_admin?id=${tg.initDataUnsafe.user.id}`)
+  const userId = tg.initDataUnsafe.user.id.toString();
+  fetch(`/api/is_admin?id=${userId}`)
     .then(res => res.json())
     .then(data => {
       if (data.isAdmin) {
@@ -13,7 +14,7 @@ if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
         if (adminBtn) adminBtn.style.display = 'inline-block';
       }
     })
-    .catch(console.error);
+    .catch(err => console.error("Admin fetch error:", err));
 }
 
 // === Состояние ===
