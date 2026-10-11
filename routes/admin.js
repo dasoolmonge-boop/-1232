@@ -217,5 +217,35 @@ module.exports = function(db) {
     }
   });
 
+  // Экспорт базы данных (скачать файл)
+  router.get('/api/admin/export-db', (req, res) => {
+    try {
+      const dbPath = path.join(__dirname, '..', 'database.sqlite');
+      if (fs.existsSync(dbPath)) {
+        res.download(dbPath, 'database.sqlite');
+      } else {
+        res.status(404).json({ error: 'Файл базы данных не найден' });
+      }
+    } catch (err) {
+      console.error('Ошибка экспорта БД:', err.message);
+      res.status(500).json({ error: 'Ошибка сервера' });
+    }
+  });
+
+  // Импорт базы данных (загрузить файл)
+  router.post('/api/admin/import-db', multer({ dest: path.join(__dirname, '..', 'uploads') }).single('dbfile'), async (req, res) => {
+    try {
+      if (!req.file) return res.status(400).json({ error: 'Файл не выбран' });
+      const dbPath = path.join(__dirname, '..', 'database.sqlite');
+      fs.copyFileSync(req.file.path, dbPath);
+      try { fs.unlinkSync(req.file.path); } catch (e) {}
+      await db.init();
+      res.json({ success: true });
+    } catch (err) {
+      console.error('Ошибка импорта БД:', err.message);
+      res.status(500).json({ error: 'Ошибка восстановления базы' });
+    }
+  });
+
   return router;
 };

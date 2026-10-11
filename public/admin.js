@@ -419,10 +419,33 @@ async function clearAllOrders() {
   }
 }
 
-// === Утилиты ===
 function escapeHtml(text) {
   if (!text) return '';
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
+}
+
+async function importDatabase(input) {
+  if (!input.files || !input.files[0]) return;
+  if (!confirm('Восстановить базу данных из выбранного файла? Текущие данные будут заменены.')) {
+    input.value = '';
+    return;
+  }
+  const formData = new FormData();
+  formData.append('dbfile', input.files[0]);
+  try {
+    const res = await fetch('/api/admin/import-db', { method: 'POST', body: formData });
+    const data = await res.json();
+    if (data.success) {
+      alert('База данных успешно восстановлена!');
+      location.reload();
+    } else {
+      alert(data.error || 'Ошибка восстановления базы');
+    }
+  } catch (e) {
+    alert('Ошибка соединения при импорте');
+  } finally {
+    input.value = '';
+  }
 }

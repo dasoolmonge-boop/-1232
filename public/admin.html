@@ -82,6 +82,18 @@
     <div class="list" id="orders-list"></div>
   </div>
 
+  <!-- === РЕЗЕРВНАЯ КОПИЯ БАЗЫ === -->
+  <div style="padding: 14px 16px; margin: 20px 16px 40px; background: white; border-radius: 12px; border: 1.5px dashed var(--uz-gold); text-align: center;">
+    <div style="font-size: 13px; font-weight: bold; margin-bottom: 10px; color: var(--uz-brown);">💾 Резервная копия базы (меню и заказы)</div>
+    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+      <a href="/api/admin/export-db" download="database.sqlite" class="btn btn-secondary btn-small" style="text-decoration: none; padding: 7px 12px; display: inline-flex; align-items: center;">📥 Скачать БД</a>
+      <label class="btn btn-secondary btn-small" style="cursor: pointer; padding: 7px 12px; display: inline-flex; align-items: center; margin: 0;">
+        📤 Восстановить БД
+        <input type="file" id="db-import-file" accept=".sqlite,.db" style="display:none;" onchange="importDatabase(this)">
+      </label>
+    </div>
+  </div>
+
   <script src="admin.js"></script>
 </body>
 </html>
