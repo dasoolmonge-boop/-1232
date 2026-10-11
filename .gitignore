@@ -1,8 +1,2 @@
 node_modules/
-database.sqlite
 .env
-uploads/*.jpg
-uploads/*.jpeg
-uploads/*.png
-uploads/*.webp
-uploads/*.gif
